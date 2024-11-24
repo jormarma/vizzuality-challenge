@@ -1,0 +1,32 @@
+### Try to download the file
+# @name enqueueLarge
+POST http://localhost:3000/url
+Content-Type: application/json
+
+{ "url": "http://external-server:3001/files/fhvhv_tripdata_2024-01.csv" }
+
+
+### Get status
+
+@id = {{enqueueLarge.response.body.$.id}}
+
+GET http://localhost:3000/url/{{id}}
+
+### Get status (manual)
+
+GET http://localhost:3000/url/85fd669d-55cf-43ab-875d-6551fa498a5d
+
+
+### Abort
+DELETE http://localhost:3000/url/{{id}}
+
+### Abort (manual)
+DELETE http://localhost:3000/url/4918239c-126e-496b-aac3-e3b5d2f1a542
+
+
+### Try to download the file (small)
+# @name enqueueShort
+POST http://localhost:3000/url
+Content-Type: application/json
+
+{ "url": "http://external:3001/files/test.csv" }

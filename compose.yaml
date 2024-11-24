@@ -1,0 +1,43 @@
+services:
+    vizzuality:
+        build: .
+        container_name: vizzuality
+        ports:
+            - "3000:3000"
+        depends_on:
+            - mongo
+            - external-server
+        environment:
+            - DB_URL=mongodb://mongo:27017
+            - PORT=3000
+            - PORT_EXTERNAL=3001
+        networks:
+            - app-network
+
+    external-server:
+        build:
+            context: .
+            dockerfile: Dockerfile.external
+        container_name: external
+        ports:
+            - "3001:3001"
+        volumes:
+            - ./csvs:/app/csvs
+        networks:
+            - app-network
+
+    mongo:
+        image: mongo:5.0
+        container_name: mongo
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongo-data:/data/db
+        networks:
+            - app-network
+
+volumes:
+    mongo-data:
+
+networks:
+    app-network:
